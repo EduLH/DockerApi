@@ -35,6 +35,10 @@ async def GET():
 def page_not_found(error):
     return custom_response(error, 404)
 
+@app.errorhandler(500)
+def internal_error(error):
+    return custom_response(error, 500)
+
 
 if __name__ == '__main__':
     app.run(debug=config.DEBUG,
