@@ -364,3 +364,12 @@ fabric.properties
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,flask,python
+/.idea/.gitignore
+/.idea/DockerApi.iml
+/.idea/misc.xml
+/.idea/modules.xml
+/Pipfile
+/Pipfile.lock
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/vcs.xml
