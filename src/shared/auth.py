@@ -17,7 +17,7 @@ class Auth:
                 payload,
                 'uma_chave_muito_secreta',
                 'HS256'
-            ).decode("utf-8")
+            )
         except Exception as e:
             return Response(
                 mimetype="application/json",
@@ -29,13 +29,13 @@ class Auth:
     def decode_token(token):
         re = {'data': {}, 'error': {}}
         try:
-            payload = jwt.decode(token, 'uma_chave_muito_secreta')
+            payload = jwt.decode(token, 'uma_chave_muito_secreta', 'HS256')
             re['data'] = {'user_info': payload['sub']}
             return re
         except jwt.ExpiredSignatureError as e1:
-            re['error'] = {'message': 'token expirado, por favor faca login'}
+            re['error'] = {'error': {'reason': 'token expirado, por favor faca login'}}
             return re
         except jwt.InvalidTokenError:
-            re['error'] = {'message': 'Token invalido, por favor tente novamente com um novo token'}
+            re['error'] = {'error': {'reason': 'Token invalido, por favor tente novamente com um novo token'}}
             return re
 

@@ -1,5 +1,5 @@
 from flask import request, Blueprint, Response
-from src.controller.filters import *
+from src.shared.auth import Auth
 import json
 
 
@@ -7,50 +7,10 @@ login_bp = Blueprint('loginbp', __name__)
 
 
 @login_bp.get("/")
-def home():
-    return custom_response("Olá mundo!!", 200)
-
-
-@login_bp.get("/userId=<int:userId>/quant=<int:quant>")
-async def get_by_userid(userId, quant):
-    response = await user_query(userId)
-    return custom_response(response.json()[0:quant], 200)
-
-
-@login_bp.get("/id=<int:id>/quant=<int:quant>")
-async def get_by_id(id, quant):
-    response = await id_query(id)
-    return custom_response(response.json()[0:quant], 200)
-
-
-@login_bp.get("/completed=<completed>/quant=<int:quant>")
-async def get_by_completed(completed, quant):
-    response = await completed_query(completed)
-    return custom_response(response.json()[0:quant], 200)
-
-
-@login_bp.get("/title=<string:title>/quant=<int:quant>")
-async def get_by_title(title, quant):
-    response = await title_query(title)
-    return custom_response(response.json()[0:quant], 200)
-
-
-@login_bp.get("/all")
-async def get_full_query():
+def login():
     req_data = request.get_json()
-    response = await all_query(req_data)
-    return custom_response(response.json()[0:req_data['quant']], 200)
-
-@login_bp.get("/alllike")
-async def get_full_like():
-    req_data = request.get_json()
-    response = await search_like(req_data)
-    return custom_response(response[0:req_data['quant']], 200)
-
-@login_bp.route("/pega")
-async def get():
-    response = await get_info({})
-    return custom_response(response.json()[0:4], 200)
+    response = Auth.generate_token(req_data)
+    return custom_response(response, 200)
 
 
 @login_bp.errorhandler(404)
