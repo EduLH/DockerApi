@@ -1,40 +1,50 @@
-from service_consumer import get_info
+from src.controller.service_consumer import get_info
 
 
 async def user_query(user_id):
-    response = get_info({'userId': user_id})
+    response = await get_info({'userId': user_id})
     return response
 
 
 async def id_query(id):
-    response = get_info({'id': id})
+    response = await get_info({'id': id})
     return response
 
 
 async def completed_query(completed):
-    response = get_info({'completed': completed})
+    response = await get_info({'completed': completed})
     return response
 
 
 async def title_query(title):
-    response = get_info({'title': title})
+    response = await get_info({'title': title})
     return response
 
 
-async def all_query(**kwargs):
-    user_id = kwargs.get('user_id', '')
-    id = kwargs.get('id', '')
-    completed = kwargs.get('completed', '')
-    title = kwargs.get('title', '')
+async def all_query(req_data):
+    user_id = req_data.get('user_id', '')
+    id = req_data.get('id', '')
+    completed = req_data.get('completed', '')
+    title = req_data.get('title', '')
     params = {
-        'user_id': user_id,
+        'userId': user_id,
         'id': id,
         'completed': completed,
         'title': title
     }
-    # query += f"?userId={user_id}" if user_id else ''
-    # query += f"?id={id}" if id else ''
-    # query += f"?completed={completed}" if completed else ''
-    # query += f"?title={title}" if title else ''
+    response = await get_info(params)
+    return response
 
-    response = get_info(params)
+async def search_like(req_data):
+    user_id = req_data.get('user_id', '')
+    id = req_data.get('id', '')
+    completed = req_data.get('completed', '')
+    title = req_data.get('title', '')
+    response = await get_info({})
+    filtered_response = [item for item in response.json() if (
+            item['userId'] == user_id or
+            item['id'] == id or
+            item['completed'] == completed or
+            title in item['title']
+    )]
+    return filtered_response
