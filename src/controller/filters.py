@@ -1,4 +1,4 @@
-from src.controller.service_consumer import get_info
+from src.shared.service_consumer import get_info
 
 
 async def user_query(user_id):
