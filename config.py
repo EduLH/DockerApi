@@ -11,8 +11,9 @@ class Production(object):
     """
     Production environment configurations
     """
-    DEBUG = False
-
+    DEBUG = True
+    HOST = '0.0.0.0'
+    PORT = 8001
 
 app_config = {
     'development': Development,
