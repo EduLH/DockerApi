@@ -1,6 +1,8 @@
 from flask import request, Blueprint, Response
 from src.shared.auth import Auth
 import json
+import logging
+import datetime
 
 
 login_bp = Blueprint('loginbp', __name__)
@@ -10,6 +12,7 @@ login_bp = Blueprint('loginbp', __name__)
 def login():
     req_data = request.get_json()
     response = Auth.generate_token(req_data)
+    logging.info(f'LOG INFO: time:{datetime.datetime.utcnow()}, response: {response}, status_code: 200')
     return custom_response(response, 200)
 
 

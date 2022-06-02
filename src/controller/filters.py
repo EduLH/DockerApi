@@ -2,17 +2,23 @@ from src.shared.service_consumer import get_info
 
 
 async def user_query(user_id):
+    if not user_id.isdigit():
+        return []
     response = await get_info({'userId': user_id})
     return response
 
 
 async def id_query(id):
+    if not id.isdigit():
+        return []
     response = await get_info({'id': id})
     return response
 
 
 async def completed_query(completed):
-    response = await get_info({'completed': completed})
+    if completed.lower() != 'true' and completed.lower() != 'false':
+        return[]
+    response = await get_info({'completed': completed.lower()})
     return response
 
 
@@ -29,7 +35,7 @@ async def all_query(req_data):
     params = {
         'userId': user_id,
         'id': id,
-        'completed': completed,
+        'completed': completed.lower(),
         'title': title
     }
     response = await get_info(params)
