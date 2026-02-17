@@ -1,15 +1,15 @@
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+
 from .models import Expense
 from .parser import parse_message
 
 
 @csrf_exempt
+@require_POST
 def webhook(request):
-    if request.method != "POST":
-        return JsonResponse({"error": "Invalid method"}, status=400)
-
     try:
         data = json.loads(request.body)
     except json.JSONDecodeError:
@@ -17,6 +17,9 @@ def webhook(request):
 
     message = data.get("message")
     phone = data.get("phone")
+
+    if not message or not phone:
+        return JsonResponse({"error": "missing fields"}, status=400)
 
     parsed = parse_message(message)
 
@@ -30,4 +33,4 @@ def webhook(request):
         amount=parsed["amount"],
     )
 
-    return JsonResponse({"status": "ok"})
+    return JsonResponse({"status": "ok"}, status=200)
