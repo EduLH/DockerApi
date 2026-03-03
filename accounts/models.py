@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = None
+    name = models.CharField(max_length=255)
 
     phone = models.CharField(max_length=20, unique=True)
 
@@ -12,4 +12,4 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     def __str__(self):
-        return self.phone
+        return f'{self.name} - {self.phone}'
